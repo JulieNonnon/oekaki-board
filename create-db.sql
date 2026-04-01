@@ -16,17 +16,18 @@ CREATE TABLE users (
 CREATE TABLE drawings (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID NOT NULL,
-  title TEXT NOT NULL,
+  title VARCHAR(100) NOT NULL,
   description TEXT,
   image_url TEXT NOT NULL,
-  replay_data JSONB NOT NULL,
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
 
   CONSTRAINT fk_drawings_user
     FOREIGN KEY(user_id)
     REFERENCES users(id)
-    ON DELETE CASCADE
+    ON DELETE CASCADE,
+
+  CONSTRAINT title_length CHECK (char_length(title) >= 1)
 );
 
 -- Table des commentaires
@@ -72,8 +73,8 @@ CREATE INDEX idx_drawings_created_at ON drawings(created_at DESC);
 CREATE INDEX idx_comments_drawing_id ON comments(drawing_id);
 CREATE INDEX idx_comments_user_id ON comments(user_id);
 
--- Pour recherche rapide JSON (si besoin)
-CREATE INDEX idx_drawings_replay_data ON drawings USING GIN (replay_data);
+-- Pour replay (pas dans le MVP, à voir plus tard)
+-- CREATE INDEX idx_drawings_replay_data ON drawings USING GIN (replay_data);
 
 -- Trigger updated_at auto
 CREATE OR REPLACE FUNCTION update_updated_at_column()
