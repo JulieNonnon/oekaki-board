@@ -1,10 +1,11 @@
 // appels drawings api
 
+import { apiFetch } from "./api";
+
 const API_URL = "http://localhost:4000";
 
-export const getDrawings = async (page = 1) => {
-  const res = await fetch(`${API_URL}/drawings?page=${page}`);
-  return res.json();
+export const getDrawings = async () => {
+  return apiFetch("/drawings");
 };
 
 export const createDrawing = async (data : any) => {
