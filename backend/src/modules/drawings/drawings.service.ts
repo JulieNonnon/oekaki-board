@@ -1,0 +1,1 @@
+// Contient la logique métier (plus tard → Prisma)

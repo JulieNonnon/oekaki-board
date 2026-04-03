@@ -1,20 +1,21 @@
 // liste des dessins
 
-//import { getDrawings } from "@/services/drawings";
+import { getDrawings } from "@/services/drawings";
+import { DrawingGrid } from "@/components/drawing/DrawingGrid";
+import { Container } from "@/src/components/layout/Container";
 
 export default async function DrawingsPage() {
-  //const data = await getDrawings();
+  const { data } = await getDrawings();
 
   return (
-    <div>
-      <h1>Drawings</h1>
+    <main className="p-6">
+      <h1 className="text-2xl font-bold mb-6">
+        🎨 Oekaki Board
+      </h1>
 
-      {/* {data.data.map((drawing : any) => (
-        <div key={drawing.id}>
-          <img src={drawing.imageUrl} width={200} />
-          <p>{drawing.title}</p>
-        </div>
-      ))} */}
-    </div>
+      <Container>
+        <DrawingGrid drawings={data} />
+      </Container>
+    </main>
   );
 }
