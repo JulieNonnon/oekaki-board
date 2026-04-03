@@ -10,3 +10,4 @@ https://dbdiagram.io/d/oekaki-board-69cd8f2578c6c4bc7ac30ef4
 
 2) Run frontend: npm run dev
 - http://localhost:3000/drawings (page avec tous les dessins récupérés)
+- http://localhost:3000/create (page de création / canvas)
