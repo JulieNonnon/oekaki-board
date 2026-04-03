@@ -9,6 +9,10 @@ export const getDrawings = async (): Promise<{ data: Drawing[] }> => {
   return apiFetch("/drawings");
 };
 
+export const getDrawingById = async (id: string) => {
+  return apiFetch(`/drawings/${id}`);
+};
+
 export const createDrawing = async (data : any) => {
   const res = await fetch(`${API_URL}/drawings`, {
     method: "POST",

@@ -2,7 +2,7 @@
 
 import { getDrawings } from "@/services/drawings";
 import { DrawingGrid } from "@/components/drawing/DrawingGrid";
-import { Container } from "@/src/components/layout/Container";
+import { Container } from "@/components/layout/Container";
 
 export default async function DrawingsPage() {
   const { data } = await getDrawings();
