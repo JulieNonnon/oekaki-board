@@ -13,14 +13,12 @@ export const getDrawingById = async (id: string) => {
   return apiFetch(`/drawings/${id}`);
 };
 
-export const createDrawing = async (data : any) => {
-  const res = await fetch(`${API_URL}/drawings`, {
+export const createDrawing = async (data: {
+  title: string;
+  imageBase64: string;
+}) => {
+  return apiFetch("/drawings", {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
     body: JSON.stringify(data)
   });
-
-  return res.json();
 };

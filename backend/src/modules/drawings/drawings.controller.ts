@@ -56,3 +56,32 @@ export const getDrawings = async (req: Request, res: Response) => {
 
         res.json(drawing);
     };
+
+    export const createDrawing = async (req: Request, res: Response) => {
+        const { title, imageBase64 } = req.body;
+
+        if ( !title || !imageBase64 ) {
+            return res.status(400).json({
+                error: "Title and imageBase64 are required"
+            });
+        }
+
+        // 👉 simulation stockage (MVP)
+        const newDrawing = {
+            id: Date.now().toString(),
+            title,
+            imageUrl: imageBase64, // ⚠️ temporaire
+            createdAt: new Date().toISOString(),
+            author: {
+            id: "1",
+            username: "you"
+            },
+            likesCount: 0,
+            commentsCount: 0
+        };
+        console.log("New drawing received");
+        res.status(201).json(newDrawing);
+        console.log("BODY:", req.body);
+    }
+    // Note : on stocke directement le base64 dans imageUrl pour simplifier, c'est temporaire pour le MVP (plus tard -> S3 ou stockage local + URL  dans la base de données )
+

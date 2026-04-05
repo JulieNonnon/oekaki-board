@@ -4,6 +4,7 @@
 
 import { useRef, useState } from "react";
 import styles from "./page.module.css";
+import { createDrawing } from "@/services/drawings";
 
 export default function CreatePage() {
 
@@ -11,6 +12,7 @@ export default function CreatePage() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [isDrawing, setIsDrawing] = useState(false);
   const [color, setColor] = useState("#000000");
+  const [title, setTitle] = useState("");
 
   // Commencer à dessiner quand la souris est pressée sur le canvas
   const startDrawing = (e: React.MouseEvent<HTMLCanvasElement>) => {
@@ -42,14 +44,26 @@ export default function CreatePage() {
   };
 
   // Pour l’instant, on se contente de récupérer l’image au format data URL et de l’afficher dans la console.
-  const saveImage = () => {
+  const saveImage = async () => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
     const dataUrl = canvas.toDataURL("image/png");
 
-    console.log(dataUrl); // 👉 pour l’instant
-};
+        try {
+            const result = await createDrawing({
+            title,
+            imageBase64: dataUrl
+            });
+
+            console.log("Saved:", result);
+
+            alert("Drawing saved !");
+        } catch (error) {
+            console.error(error);
+            alert("Error while saving");
+        }
+  };
 
   return (
     <main className="p-6">
@@ -74,6 +88,14 @@ export default function CreatePage() {
         onChange={(e) => setColor(e.target.value)}
         className="mb-4"
       />
+      
+      <input
+        type="text"
+        placeholder="Titre du dessin"
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
+        className="border p-2 mb-4 block"
+       />
 
       <button
         onClick={saveImage}
