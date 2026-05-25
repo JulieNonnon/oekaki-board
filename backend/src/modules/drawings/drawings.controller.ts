@@ -19,22 +19,44 @@ export const getDrawings = async (req: Request, res: Response) => {
 };
 
 // ✅ Détail (CORRIGÉ)
-export const getDrawingById = async (req: Request, res: Response) => {
+export const getDrawingById = async (
+  req: Request,
+  res: Response
+) => {
   try {
-    const { id } = req.params;
 
-    const drawing = await prisma.drawing.findUnique({
-      where: { id }
-    });
+    const id = req.params.id;
+    
+    // sécurité optionnelle : on vérifie que l'id n'est pas un tableau (ce qui pourrait arriver si la route est mal utilisée ou si un bot tente d'exploiter la route)
+    if (Array.isArray(id)) {
+      return res.status(400).json({
+        error: "Invalid id format"
+      });
+    }
+
+    console.log("PARAM ID:", id);
+
+    const drawing =
+      await prisma.drawing.findUnique({
+        where: { id }
+      });
+
+    console.log("FOUND DRAWING:", drawing);
 
     if (!drawing) {
-      return res.status(404).json({ error: "Drawing not found" });
+      return res.status(404).json({
+        error: "Drawing not found"
+      });
     }
 
     res.json(drawing);
+
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Error fetching drawing" });
+
+    res.status(500).json({
+      error: "Error fetching drawing"
+    });
   }
 };
 
