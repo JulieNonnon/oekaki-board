@@ -1,9 +1,7 @@
 // home page
 
-export default async function Home() {
-  const res = await fetch("http://localhost:4000");
+import { redirect } from "next/navigation";
 
-  const text = await res.text();
-
-  return <div>{text}</div>;
+export default function HomePage() {
+  redirect("/drawings");
 }

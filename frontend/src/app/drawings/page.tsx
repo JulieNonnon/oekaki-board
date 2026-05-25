@@ -6,6 +6,7 @@ export const dynamic = "force-dynamic";
 import { getDrawings } from "@/services/drawings";
 import { DrawingGrid } from "@/components/drawing/DrawingGrid";
 import { Container } from "@/components/layout/Container";
+import Link from "next/link";
 
 export default async function DrawingsPage() {
   const drawings = await getDrawings();
@@ -13,6 +14,12 @@ export default async function DrawingsPage() {
   return (
     <main className="container">
   <h1>🎨 Oekaki Board</h1>
+
+  <Link href="/create">
+    <button className="button">
+      ✨ Dessiner une œuvre
+    </button>
+  </Link>
 
   <div className="grid">
     <DrawingGrid drawings={drawings} />

@@ -1,15 +1,19 @@
 // page de dessin / canvas
 
-"use client";
+// on active le mode client pour pouvoir utiliser les hooks React (useState, useRef, etc.) et gérer l’interactivité du canvas.
+"use client"; 
 
 import { useRef, useState } from "react";
 import styles from "./page.module.css";
 import { createDrawing } from "@/services/drawings";
 import { useRouter } from "next/navigation";
+import Link from "next/dist/client/link";
+import { Modal } from "@/components/ui/Modal";
 
 export default function CreatePage() {
 
   const router = useRouter();
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   // Références et états pour gérer le dessin sur le canvas
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -61,8 +65,9 @@ export default function CreatePage() {
 
             console.log("Saved:", result);
 
-            alert("Drawing saved !");
-            router.push("/drawings");
+            // alert("Drawing saved !");
+            // router.push("/drawings");
+            setIsModalOpen(true);
         } catch (error) {
             console.error(error);
             alert("Error while saving");
@@ -72,6 +77,12 @@ export default function CreatePage() {
   return (
     <main className="container">
       <h1>🎨 Create Drawing</h1>
+
+      <Link href="/drawings">
+        <button className="button">
+          ↩️ Retour à l'accueil
+        </button>
+      </Link>
     
       <div className="card" style={{ padding: 16 }}>
       <canvas
@@ -107,6 +118,13 @@ export default function CreatePage() {
         Save
       </button>
       </div>
+      
+      <Modal
+        isOpen={isModalOpen}
+        title="🎉 Dessin sauvegardé"
+        message="Votre œuvre a bien été enregistrée."
+        onClose={() => router.push("/drawings")}
+      />
     </main>
   );
 }
