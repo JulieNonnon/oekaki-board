@@ -5,12 +5,14 @@ import { Drawing } from "../types/drawing";
 
 const API_URL = "http://localhost:4000";
 
-export const getDrawings = async (): Promise<{ data: Drawing[] }> => {
+export const getDrawings = async () => {
   return apiFetch("/drawings");
 };
 
 export const getDrawingById = async (id: string) => {
-  return apiFetch(`/drawings/${id}`);
+  const res = await fetch(`http://localhost:4000/drawings/${id}`);
+  if (!res.ok) throw new Error("Failed to fetch drawing");
+  return res.json();
 };
 
 export const createDrawing = async (data: {

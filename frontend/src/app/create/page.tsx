@@ -5,8 +5,11 @@
 import { useRef, useState } from "react";
 import styles from "./page.module.css";
 import { createDrawing } from "@/services/drawings";
+import { useRouter } from "next/navigation";
 
 export default function CreatePage() {
+
+  const router = useRouter();
 
   // Références et états pour gérer le dessin sur le canvas
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -59,6 +62,7 @@ export default function CreatePage() {
             console.log("Saved:", result);
 
             alert("Drawing saved !");
+            router.push("/drawings");
         } catch (error) {
             console.error(error);
             alert("Error while saving");
@@ -66,16 +70,15 @@ export default function CreatePage() {
   };
 
   return (
-    <main className="p-6">
-      <h1 className="text-2xl font-bold mb-4">
-        🎨 Create Drawing
-      </h1>
+    <main className="container">
+      <h1>🎨 Create Drawing</h1>
     
+      <div className="card" style={{ padding: 16 }}>
       <canvas
         ref={canvasRef}
         width={600}
         height={400}
-        className="border rounded cursor-crosshair"
+        className="canvas"
         onMouseDown={startDrawing}
         onMouseMove={draw}
         onMouseUp={stopDrawing}
@@ -86,7 +89,7 @@ export default function CreatePage() {
         type="color"
         value={color}
         onChange={(e) => setColor(e.target.value)}
-        className="mb-4"
+        className="input"
       />
       
       <input
@@ -94,15 +97,16 @@ export default function CreatePage() {
         placeholder="Titre du dessin"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
-        className="border p-2 mb-4 block"
+        className="input"
        />
 
       <button
         onClick={saveImage}
-        className="ml-4 px-4 py-2 bg-blue-500 text-white rounded"
+        className="button"
         >
         Save
       </button>
+      </div>
     </main>
   );
 }

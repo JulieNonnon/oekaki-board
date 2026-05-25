@@ -3,7 +3,7 @@
 // Il englobe toutes les pages de l'application, on peut y mettre des éléments communs (header, footer, etc.) et des styles globaux.
 // layout → page → components
 
-//import "./globals.css";
+import "./globals.css";
 
 export default function RootLayout({
   children,
@@ -12,7 +12,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="fr">
-      <body className="bg-gray-50 text-gray-900">
+      <body>
         {children}
       </body>
     </html>

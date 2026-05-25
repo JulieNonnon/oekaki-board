@@ -6,8 +6,12 @@ interface Props {
 }
 
 export const DrawingGrid = ({ drawings }: Props) => {
+  if (!drawings || drawings.length === 0) {
+    return <p className="text-gray-500">Aucun dessin pour le moment 🎨</p>;
+  }
+
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+    <div>
       {drawings.map((drawing) => (
         <DrawingCard key={drawing.id} drawing={drawing} />
       ))}
