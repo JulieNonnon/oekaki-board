@@ -20,6 +20,7 @@ export default function CreatePage() {
   const [isDrawing, setIsDrawing] = useState(false);
   const [color, setColor] = useState("#000000");
   const [title, setTitle] = useState("");
+  const [hasDrawn, setHasDrawn] = useState(false);
 
   // Commencer à dessiner quand la souris est pressée sur le canvas
   const startDrawing = (e: React.MouseEvent<HTMLCanvasElement>) => {
@@ -38,17 +39,42 @@ export default function CreatePage() {
   const draw = (e: React.MouseEvent<HTMLCanvasElement>) => {
     if (!isDrawing) return;
 
-    const ctx = canvasRef.current?.getContext("2d");
+    const ctx = canvasRef.current?.getContext("2d"); //ctx est le contexte de dessin du canvas, c'est lui qui nous permet de dessiner dessus.
     if (!ctx) return;
 
     ctx.lineTo(e.nativeEvent.offsetX, e.nativeEvent.offsetY);
     ctx.stroke();
+
+    setHasDrawn(true); // 👈 important
   };
 
   // Arrêter de dessiner quand la souris est relâchée ou quitte le canvas
   const stopDrawing = () => {
     setIsDrawing(false);
   };
+
+  // Vérifier si le canvas est vide (pas de dessin) avant de sauvegarder, pour éviter de créer des dessins vides dans la base de données.
+  const isCanvasEmpty = () => {
+    const canvas = canvasRef.current;
+    if (!canvas) return true;
+
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return true;
+
+    const pixelBuffer = new Uint32Array(
+      ctx.getImageData(
+        0,
+        0,
+        canvas.width,
+        canvas.height
+      ).data.buffer
+    );
+
+    return !pixelBuffer.some((pixel) => pixel !== 0);
+  };
+
+  // Activer le bouton de sauvegarde seulement si le titre est rempli, qu'on a dessiné quelque chose et que le canvas n'est pas vide.
+  const canSave = title.trim().length > 0 && hasDrawn && !isCanvasEmpty();
 
   // Pour l’instant, on se contente de récupérer l’image au format data URL et de l’afficher dans la console.
   const saveImage = async () => {
@@ -64,9 +90,6 @@ export default function CreatePage() {
             });
 
             console.log("Saved:", result);
-
-            // alert("Drawing saved !");
-            // router.push("/drawings");
             setIsModalOpen(true);
         } catch (error) {
             console.error(error);
@@ -113,12 +136,17 @@ export default function CreatePage() {
 
       <button
         onClick={saveImage}
-        className="button"
-        >
+        disabled={!canSave}
+        className={
+          `button ${canSave 
+            ? "bg-blue-500 hover:bg-blue-600"
+            : "bg-gray-300 cursor-not-allowed"}`
+        }
+      >
         Save
       </button>
       </div>
-      
+
       <Modal
         isOpen={isModalOpen}
         title="🎉 Dessin sauvegardé"
