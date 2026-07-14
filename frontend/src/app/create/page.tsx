@@ -18,10 +18,12 @@ export default function CreatePage() {
   // Références et états pour gérer le dessin sur le canvas
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [isDrawing, setIsDrawing] = useState(false);
-  const [color, setColor] = useState("#000000");
-  const [title, setTitle] = useState("");
   const [hasDrawn, setHasDrawn] = useState(false);
+  const [title, setTitle] = useState("");
+  const [color, setColor] = useState("#000000");
+  const [brushSize, setBrushSize] = useState(3);
   const [tool, setTool] = useState<"brush" | "eraser">("brush"); // pour gérer l’outil sélectionné (pinceau ou gomme), le pinceau est l’outil par défaut.
+  
 
   // Fonction pour configurer le contexte du canvas selon l’outil sélectionné
   const configureContext = (ctx: CanvasRenderingContext2D) => {
@@ -31,10 +33,11 @@ export default function CreatePage() {
     if (tool === "brush") {
       ctx.globalCompositeOperation = "source-over";
       ctx.strokeStyle = color;
-      ctx.lineWidth = 3;
-    } else {
+      ctx.lineWidth = brushSize; // 3px
+    }
+    if (tool === "eraser") {
       ctx.globalCompositeOperation = "destination-out";
-      ctx.lineWidth = 20;
+      ctx.lineWidth = brushSize * 3;
     }
   };
 
@@ -160,6 +163,22 @@ export default function CreatePage() {
         onChange={(e) => setColor(e.target.value)}
         className="input"
       />
+
+      <div>
+        <label>
+          Taille du pinceau : {brushSize}px
+        </label>
+
+        <input
+          type="range"
+          min="1"
+          max="50"
+          value={brushSize}
+          onChange={(e) =>
+            setBrushSize(Number(e.target.value))
+          }
+        />
+      </div>
 
       <button onClick={() => setTool("brush")}>
         🖌️Brush
