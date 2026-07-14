@@ -21,6 +21,9 @@ export default function CreatePage() {
   const [color, setColor] = useState("#000000");
   const [title, setTitle] = useState("");
   const [hasDrawn, setHasDrawn] = useState(false);
+  const [tool, setTool] = useState<"brush" | "eraser">("brush"); // pour gérer l’outil sélectionné (pinceau ou gomme), le pinceau est l’outil par défaut.
+
+  
 
   // Commencer à dessiner quand la souris est pressée sur le canvas
   const startDrawing = (e: React.MouseEvent<HTMLCanvasElement>) => {
@@ -29,8 +32,19 @@ export default function CreatePage() {
 
     ctx.beginPath();
     ctx.moveTo(e.nativeEvent.offsetX, e.nativeEvent.offsetY);
-    ctx.strokeStyle = color;
-    ctx.lineWidth = 3;
+    // ctx.strokeStyle = color;
+
+    // largeur du trait selon l'outil séléctionné
+    if (tool === "brush") {
+      ctx.globalCompositeOperation = "source-over"; // signifie que le dessin se fait par-dessus ce qui est déjà sur le canvas
+      ctx.strokeStyle = color;
+      ctx.lineWidth = 3;
+    }
+
+    if (tool === "eraser") {
+      ctx.globalCompositeOperation = "destination-out"; // signifie que le dessin efface ce qui est déjà sur le canvas
+      ctx.lineWidth = 20;
+    }
 
     setIsDrawing(true);
   };
@@ -51,6 +65,18 @@ export default function CreatePage() {
   // Arrêter de dessiner quand la souris est relâchée ou quitte le canvas
   const stopDrawing = () => {
     setIsDrawing(false);
+  };
+
+  // Effacer l'entièreté du canva avec un "Clear All"
+  const clearCanvas = () => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const ctx =canvas.getContext("2d");
+    if (!ctx) return;
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    setHasDrawn(false);
   };
 
   // Vérifier si le canvas est vide (pas de dessin) avant de sauvegarder, pour éviter de créer des dessins vides dans la base de données.
@@ -131,6 +157,22 @@ export default function CreatePage() {
         onChange={(e) => setColor(e.target.value)}
         className="input"
       />
+
+      <button onClick={() => setTool("brush")}>
+        🖌️Brush
+      </button>
+
+      <button onClick={() => setTool("eraser")}>
+        🧽Eraser
+      </button>
+
+      <button
+        type="button"
+        onClick={clearCanvas}
+        disabled={!hasDrawn}
+      >
+        ❌Clear all
+      </button>
       
       <input
         type="text"
