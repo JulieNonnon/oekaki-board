@@ -5,3 +5,8 @@
 .cursor-crosshair {
     cursor: crosshair;
 }
+
+.card {
+    display: flex;
+    flex-direction: row; 
+}

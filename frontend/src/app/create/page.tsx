@@ -9,6 +9,7 @@ import { createDrawing } from "@/services/drawings";
 import { useRouter } from "next/navigation";
 import Link from "next/dist/client/link";
 import { Modal } from "@/components/ui/Modal";
+import { ColorPalette } from "@/components/drawing/ColorPalette";
 
 export default function CreatePage() {
 
@@ -139,6 +140,9 @@ export default function CreatePage() {
     <main className="container">
       <h1>🎨 Create Drawing</h1>
 
+      <h2>⚠️ Cet Oekaki Board est développé dans un but pédagogique: merci de ne pas publier de contenu sensible, inapproprié ou diffamatoire.</h2>
+      {/* <h2>Outil sélectionné : {tool}</h2> */}
+
       <Link href="/drawings">
         <button className="button">
           ↩️ Retour à l'accueil
@@ -146,75 +150,101 @@ export default function CreatePage() {
       </Link>
     
       <div className="card" style={{ padding: 16 }}>
-      <canvas
-        ref={canvasRef}
-        width={600}
-        height={400}
-        className="canvas"
-        onMouseDown={startDrawing}
-        onMouseMove={draw}
-        onMouseUp={stopDrawing}
-        onMouseLeave={stopDrawing}
-      />
+        <div className={styles.canvasContainer}>
+          <canvas
+            ref={canvasRef}
+            width={600}
+            height={400}
+            className="canvas"
+            onMouseDown={startDrawing}
+            onMouseMove={draw}
+            onMouseUp={stopDrawing}
+            onMouseLeave={stopDrawing}
+          />
+        </div>
 
-      <input
-        type="color"
-        value={color}
-        onChange={(e) => setColor(e.target.value)}
-        className="input"
-      />
-
-      <div>
+      <div className={styles.canvasControls}>
         <label>
-          Taille du pinceau : {brushSize}px
+          Palette de couleurs :
         </label>
-
         <input
-          type="range"
-          min="1"
-          max="50"
-          value={brushSize}
-          onChange={(e) =>
-            setBrushSize(Number(e.target.value))
-          }
+          title="Afficher la palette de couleurs"
+          color="black"
+          type="color"
+          value={color}
+          onChange={(e) => setColor(e.target.value)}
+          className="input"
         />
+
+        <ColorPalette
+          title="Sélectionner une couleur"
+          selectedColor={color}
+          onChange={setColor}
+        />
+
+        <div>
+          <label>
+            Taille du pinceau : {brushSize}px
+          </label>
+
+          <input
+            title="Ajuster la taille du pinceau"
+            type="range"
+            min="1"
+            max="50"
+            value={brushSize}
+            onChange={(e) =>
+              setBrushSize(Number(e.target.value))
+            }
+          />
+        </div>
+
+        <button
+          title="Sélectionner le pinceau pour dessiner"
+          onClick={() => setTool("brush")}
+        >
+          🖌️Brush
+        </button>
+
+        <button 
+          title="Sélectionner la gomme pour effacer" 
+          onClick={() => setTool("eraser")}
+        >
+          🧽Eraser
+        </button>
+
+        <button
+          title="Effacer tout le dessin"
+          type="button"
+          onClick={clearCanvas}
+          disabled={!hasDrawn}
+        >
+          ❌Clear all
+        </button>
       </div>
-
-      <button onClick={() => setTool("brush")}>
-        🖌️Brush
-      </button>
-
-      <button onClick={() => setTool("eraser")}>
-        🧽Eraser
-      </button>
-
-      <button
-        type="button"
-        onClick={clearCanvas}
-        disabled={!hasDrawn}
-      >
-        ❌Clear all
-      </button>
       
-      <input
-        type="text"
-        placeholder="Titre du dessin"
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-        className="input"
-       />
+      <div className={styles.saveControls}>
+        <input
+          title="Renseigner un titre"
+          type="text"
+          placeholder="Titre du dessin"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          className="input"
+        />
 
-      <button
-        onClick={saveImage}
-        disabled={!canSave}
-        className={
-          `button ${canSave 
-            ? "bg-blue-500 hover:bg-blue-600"
-            : "bg-gray-300 cursor-not-allowed"}`
-        }
-      >
-        Save
-      </button>
+        <button
+          title="Sauvegarder et publier votre dessin"
+          onClick={saveImage}
+          disabled={!canSave}
+          className={
+            `button ${canSave 
+              ? "bg-blue-500 hover:bg-blue-600"
+              : "bg-gray-300 cursor-not-allowed"}`
+          }
+        >
+          ✅Save
+        </button>
       </div>
 
       <Modal
@@ -223,6 +253,8 @@ export default function CreatePage() {
         message="Votre œuvre a bien été enregistrée."
         onClose={() => router.push("/drawings")}
       />
+
+      </div>
     </main>
   );
 }

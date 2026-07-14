@@ -2,7 +2,8 @@
 
 :root {
   --bg: #5471b6;
-  --card: #ffffff;
+  --canvas: #ffffff;
+  --card: #d6e3ee;
   --text: #e5e7eb;
   --muted: #9ca3af;
   --primary: #3b82f6;
@@ -23,8 +24,10 @@ body {
 }
 
 .card {
+  display: flex;
+  gap: 20px;
   background: var(--card);
-  border: 3px solid var(--border);
+  border: 2px solid var(--border);
   border-radius: 12px;
   overflow: hidden;
   padding: 20px;
@@ -32,6 +35,7 @@ body {
 
 img {
   display: block;
+  background: var(--canvas);
   width: 50%;
   height: auto;
   border: 2px solid var(--border);
@@ -67,6 +71,7 @@ img {
 
 .canvas {
   border: 1px solid var(--border);
+  background: var(--canvas);
   border-radius: 8px;
   margin-bottom: 12px;
   cursor: crosshair;
