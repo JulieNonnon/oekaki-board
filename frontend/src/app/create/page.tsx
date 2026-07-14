@@ -73,12 +73,18 @@ export default function CreatePage() {
     return !pixelBuffer.some((pixel) => pixel !== 0);
   };
 
-  // Activer le bouton de sauvegarde seulement si le titre est rempli, qu'on a dessiné quelque chose et que le canvas n'est pas vide.
-  const canSave = title.trim().length > 0 && hasDrawn && !isCanvasEmpty();
+  // Activer le bouton de sauvegarde seulement si le titre est rempli et qu'on a dessiné quelque chose.
+  const canSave = title.trim().length > 0 && hasDrawn;
 
   // Pour l’instant, on se contente de récupérer l’image au format data URL et de l’afficher dans la console.
   const saveImage = async () => {
     const canvas = canvasRef.current;
+
+    if (isCanvasEmpty()) {
+      alert("Le dessin est vide.");
+      return;
+    }
+
     if (!canvas) return;
 
     const dataUrl = canvas.toDataURL("image/png");
