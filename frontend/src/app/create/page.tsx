@@ -3,7 +3,7 @@
 // on active le mode client pour pouvoir utiliser les hooks React (useState, useRef, etc.) et gérer l’interactivité du canvas.
 "use client"; 
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import styles from "./page.module.css";
 import { createDrawing } from "@/services/drawings";
 import { useRouter } from "next/navigation";
@@ -24,7 +24,19 @@ export default function CreatePage() {
   const [color, setColor] = useState("#000000");
   const [brushSize, setBrushSize] = useState(3);
   const [tool, setTool] = useState<"brush" | "eraser">("brush"); // pour gérer l’outil sélectionné (pinceau ou gomme), le pinceau est l’outil par défaut.
+  const [history, setHistory] = useState<string[]>([]); // pour gestion de l’historique des actions de dessin (undo/redo)
+  const [historyIndex, setHistoryIndex] = useState(-1); // pour suivre l’index actuel dans l’historique des actions de dessin
   
+  // Initialiser l’historique avec l’état initial du canvas (vide) lors du montage du composant
+  useEffect(() => {
+    const canvas = canvasRef.current;
+
+    if (!canvas) return;
+
+    setHistory([canvas.toDataURL()]);
+    setHistoryIndex(0);
+
+  }, []);
 
   // Fonction pour configurer le contexte du canvas selon l’outil sélectionné
   const configureContext = (ctx: CanvasRenderingContext2D) => {
@@ -71,7 +83,74 @@ export default function CreatePage() {
 
   // Arrêter de dessiner quand la souris est relâchée ou quitte le canvas
   const stopDrawing = () => {
+    if (isDrawing) {
+      saveHistory(); // Sauvegarder l’état actuel du canvas dans l’historique pour permettre l’undo/redo
+    }
     setIsDrawing(false);
+  };
+
+  // Sauvegarder l’état actuel du canvas dans l’historique pour permettre l’undo/redo
+  const saveHistory = () => {
+    const canvas = canvasRef.current;
+
+    if (!canvas) return;
+
+    const snapshot = canvas.toDataURL();
+
+    // setHistory((prev) => [...prev, snapshot]);
+
+    setHistory((prev) => { // On ne garde que l’historique jusqu’à l’index actuel pour éviter d’avoir des états "futurs" après un undo.
+      const next = prev.slice(0, historyIndex + 1);
+      next.push(snapshot);
+      return next;
+    });
+
+    setHistoryIndex((prev) => prev + 1);
+  };
+
+  // Charger un état précédent du canvas depuis l’historique pour permettre l’undo/redo
+  const loadHistory = (index: number) => {
+    const canvas = canvasRef.current;
+
+    if (!canvas) return;
+
+    const ctx = canvas.getContext("2d");
+
+    if (!ctx) return;
+
+    const snapshot = history[index]; // Récupérer l’état du canvas à l’index spécifié dans l’historique
+
+    if (!snapshot) return;
+
+    const image = new Image(); // Créer un nouvel objet Image pour charger l’état du canvas depuis l’historique
+
+    image.src = snapshot; // On lui assigne le base64 de l’état du canvas à l’index spécifié dans l’historique
+
+    image.onload = () => { // Quand l’image est chargée, on peut la dessiner sur le canvas
+      ctx.clearRect( // on nettoie le canvas avant de dessiner l’état précédent
+        0,
+        0,
+        canvas.width,
+        canvas.height
+      );
+
+      ctx.drawImage( // puis on dessine l’image chargée sur le canvas
+        image,
+        0,
+        0
+      );
+    };
+  };
+
+  // Fonction pour annuler la dernière action de dessin (undo)
+  const undo = () => {
+    if (historyIndex <= 0) return; // "Puis-je revenir en arrière ? Si je suis déjà au début de l’historique, je ne peux pas faire d’undo."
+
+    const previousIndex = historyIndex - 1; // On calcule l’index précédent dans l’historique pour revenir en arrière.
+
+    setHistoryIndex(previousIndex); // On met à jour l’index actuel dans l’historique pour refléter l’action d’undo.
+
+    loadHistory(previousIndex); // Enfin, on recharge l’état du canvas correspondant à l’index précédent dans l’historique pour revenir en arrière.
   };
 
   // Effacer l'entièreté du canva avec un "Clear All"
@@ -211,6 +290,14 @@ export default function CreatePage() {
           onClick={() => setTool("eraser")}
         >
           🧽Eraser
+        </button>
+
+        <button
+          title="Annuler la dernière action de dessin"
+          onClick={undo}
+          disabled={historyIndex <= 0}
+        >
+          ↩️Undo
         </button>
 
         <button
