@@ -153,6 +153,17 @@ export default function CreatePage() {
     loadHistory(previousIndex); // Enfin, on recharge l’état du canvas correspondant à l’index précédent dans l’historique pour revenir en arrière.
   };
 
+  // Fonction pour rétablir la dernière action de dessin annulée (redo)
+  const redo = () => {
+    if (historyIndex >= history.length - 1) return;
+
+    const nextIndex = historyIndex + 1;
+
+    setHistoryIndex(nextIndex);
+
+    loadHistory(nextIndex);
+  };
+
   // Effacer l'entièreté du canva avec un "Clear All"
   const clearCanvas = () => {
     const canvas = canvasRef.current;
@@ -298,6 +309,13 @@ export default function CreatePage() {
           disabled={historyIndex <= 0}
         >
           ↩️Undo
+        </button>
+
+        <button
+          onClick={redo}
+          disabled={historyIndex >= history.length - 1}
+        >
+          ↪️Redo
         </button>
 
         <button
