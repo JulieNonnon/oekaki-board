@@ -106,3 +106,17 @@ img {
   margin-bottom: 20px;
   color: var(--muted);
 }
+
+/* Toolbar */
+
+.canvasControls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+}
+
+.button-active {
+  border: 2px solid #2563eb;
+  background: #dbeafe;
+}
