@@ -9,7 +9,7 @@ import { createDrawing } from "@/services/drawings";
 import { useRouter } from "next/navigation";
 import Link from "next/dist/client/link";
 import { Modal } from "@/components/ui/Modal";
-import { ColorPalette } from "@/components/drawing/ColorPalette";
+import { Canvas } from "@/components/drawing/Canvas";
 import { Toolbar } from "@/components/drawing/Toolbar";
 
 export default function CreatePage() {
@@ -242,15 +242,11 @@ export default function CreatePage() {
     
       <div className="card" style={{ padding: 16 }}>
         <div className={styles.canvasContainer}>
-          <canvas
-            ref={canvasRef}
-            width={600}
-            height={400}
-            className="canvas"
-            onMouseDown={startDrawing}
-            onMouseMove={draw}
-            onMouseUp={stopDrawing}
-            onMouseLeave={stopDrawing}
+          <Canvas
+            canvasRef={canvasRef}
+            startDrawing={startDrawing}
+            draw={draw}
+            stopDrawing={stopDrawing}
           />
         </div>
 
@@ -276,81 +272,6 @@ export default function CreatePage() {
 
           hasDrawn={hasDrawn}
       />
-
-        {/* <label>
-          Palette de couleurs :
-        </label>
-        <input
-          title="Afficher la palette de couleurs"
-          color="black"
-          type="color"
-          value={color}
-          onChange={(e) => setColor(e.target.value)}
-          className="input"
-        />
-
-        <ColorPalette
-          title="Sélectionner une couleur"
-          selectedColor={color}
-          onChange={setColor}
-        />
-
-        <div>
-          <label>
-            Taille du pinceau : {brushSize}px
-          </label>
-
-          <input
-            title="Ajuster la taille du pinceau"
-            type="range"
-            min="1"
-            max="50"
-            value={brushSize}
-            onChange={(e) =>
-              setBrushSize(Number(e.target.value))
-            }
-          />
-        </div>
-
-        <button
-          title="Sélectionner le pinceau pour dessiner"
-          onClick={() => setTool("brush")}
-        >
-          🖌️Brush
-        </button>
-
-        <button 
-          title="Sélectionner la gomme pour effacer" 
-          onClick={() => setTool("eraser")}
-        >
-          🧽Eraser
-        </button>
-
-        <button
-          title="Annuler la dernière action de dessin"
-          onClick={undo}
-          disabled={historyIndex <= 0}
-        >
-          ↩️Undo
-        </button>
-
-        <button
-          onClick={redo}
-          disabled={historyIndex >= history.length - 1}
-        >
-          ↪️Redo
-        </button>
-
-        <button
-          title="Effacer tout le dessin"
-          type="button"
-          onClick={clearCanvas}
-          disabled={!hasDrawn}
-        >
-          ❌Clear all
-        </button>
-      </div>
-      */}
       
       <div className={styles.saveControls}>
         <input
