@@ -55,6 +55,12 @@ img {
   opacity: 0.9;
 }
 
+label {
+  color: var(--primary);
+  margin: 0 10px 0 0;
+  font-weight: bold;
+}
+
 .input {
   padding: 10px;
   border-radius: 8px;

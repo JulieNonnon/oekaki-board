@@ -10,6 +10,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/dist/client/link";
 import { Modal } from "@/components/ui/Modal";
 import { ColorPalette } from "@/components/drawing/ColorPalette";
+import { Toolbar } from "@/components/drawing/Toolbar";
 
 export default function CreatePage() {
 
@@ -254,7 +255,29 @@ export default function CreatePage() {
         </div>
 
       <div className={styles.canvasControls}>
-        <label>
+
+        <Toolbar
+          color={color}
+          setColor={setColor}
+
+          brushSize={brushSize}
+          setBrushSize={setBrushSize}
+
+          tool={tool}
+          setTool={setTool}
+
+          undo={undo}
+          redo={redo}
+
+          clearCanvas={clearCanvas}
+
+          historyIndex={historyIndex}
+          historyLength={history.length}
+
+          hasDrawn={hasDrawn}
+      />
+
+        {/* <label>
           Palette de couleurs :
         </label>
         <input
@@ -327,6 +350,7 @@ export default function CreatePage() {
           ❌Clear all
         </button>
       </div>
+      */}
       
       <div className={styles.saveControls}>
         <input
@@ -350,6 +374,7 @@ export default function CreatePage() {
         >
           ✅Save
         </button>
+      </div>
       </div>
 
       <Modal

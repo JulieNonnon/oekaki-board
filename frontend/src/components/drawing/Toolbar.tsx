@@ -46,6 +46,7 @@ export const Toolbar = ({
                 <label>Palette de couleurs :</label>
 
                 <input
+                title="Afficher la palette de couleurs"
                 type="color"
                 value={color}
                 onChange={(e) => setColor(e.target.value)}
@@ -64,6 +65,7 @@ export const Toolbar = ({
                 </label>
 
                 <input
+                    title="Changer la taille du pinceau"
                     type="range"
                     min="1"
                     max="50"
@@ -76,6 +78,7 @@ export const Toolbar = ({
 
             <section>
                 <button
+                    title="Sélectionner l'outil pinceau"
                     onClick={() => setTool("brush")}
                     className={tool === "brush" ? "button-active" : ""}
                 >
@@ -83,6 +86,7 @@ export const Toolbar = ({
                 </button>
 
                 <button
+                title="Sélectionner l'outil gomme"
                 onClick={() => setTool("eraser")}
                 className={tool === "eraser" ? "button-active" : ""}
                 >
@@ -92,6 +96,7 @@ export const Toolbar = ({
 
             <section>            
                 <button
+                title="Annuler la dernière action"
                 onClick={undo}
                 disabled={historyIndex <= 0}
                 >
@@ -99,6 +104,7 @@ export const Toolbar = ({
                 </button>
 
                 <button
+                title="Refaire la dernière action"
                 onClick={redo}
                 disabled={historyIndex >= historyLength - 1}
                 >
@@ -106,13 +112,14 @@ export const Toolbar = ({
                 </button>
 
                 <button
+                title="Effacer tout"
                 onClick={clearCanvas}
                 disabled={!hasDrawn}
                 >
                 ❌ Clear all
                 </button>
             </section>
-            
+
         </div>
     )
 };
