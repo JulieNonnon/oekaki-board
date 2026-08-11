@@ -232,7 +232,6 @@ export default function CreatePage() {
       <h1>🎨 Create Drawing</h1>
 
       <h2>⚠️ Cet Oekaki Board est développé dans un but pédagogique: merci de ne pas publier de contenu sensible, inapproprié ou diffamatoire.</h2>
-      {/* <h2>Outil sélectionné : {tool}</h2> */}
 
       <Link href="/drawings">
         <button className="button">
@@ -240,62 +239,62 @@ export default function CreatePage() {
         </button>
       </Link>
     
-      <div className="card" style={{ padding: 16 }}>
-        <div className={styles.canvasContainer}>
-          <Canvas
-            canvasRef={canvasRef}
-            startDrawing={startDrawing}
-            draw={draw}
-            stopDrawing={stopDrawing}
-          />
-        </div>
+      <div className="editor-card">
 
-      <div className={styles.canvasControls}>
-
-        <Toolbar
-          color={color}
-          setColor={setColor}
-
-          brushSize={brushSize}
-          setBrushSize={setBrushSize}
-
-          tool={tool}
-          setTool={setTool}
-
-          undo={undo}
-          redo={redo}
-
-          clearCanvas={clearCanvas}
-
-          historyIndex={historyIndex}
-          historyLength={history.length}
-
-          hasDrawn={hasDrawn}
-      />
-      
-      <div className={styles.saveControls}>
-        <input
-          title="Renseigner un titre"
-          type="text"
-          placeholder="Titre du dessin"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          className="input"
+        <Canvas
+          width={600}
+          height={400}
+          canvasRef={canvasRef}
+          startDrawing={startDrawing}
+          draw={draw}
+          stopDrawing={stopDrawing}
         />
 
-        <button
-          title="Sauvegarder et publier votre dessin"
-          onClick={saveImage}
-          disabled={!canSave}
-          className={
-            `button ${canSave 
-              ? "bg-blue-500 hover:bg-blue-600"
-              : "bg-gray-300 cursor-not-allowed"}`
-          }
-        >
-          ✅Save
-        </button>
-      </div>
+        <div className="editor-controls">
+
+          <Toolbar
+            color={color}
+            setColor={setColor}
+            brushSize={brushSize}
+            setBrushSize={setBrushSize}
+            tool={tool}
+            setTool={setTool}
+            undo={undo}
+            redo={redo}
+            clearCanvas={clearCanvas}
+            historyIndex={historyIndex}
+            historyLength={history.length}
+            hasDrawn={hasDrawn}
+          />
+
+          <div className="saveControls">
+        
+          <input
+            title="Renseigner un titre"
+            type="text"
+            placeholder="Titre du dessin"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            className="input"
+          />
+
+          <button
+            title="Sauvegarder et publier votre dessin"
+            onClick={saveImage}
+            disabled={!canSave}
+            className={
+              `button ${canSave 
+                ? "bg-blue-500 hover:bg-blue-600"
+                : "bg-gray-300 cursor-not-allowed"}`
+            }
+          >
+            ✅Save
+          </button>
+
+          </div>
+
+        </div>
+
       </div>
 
       <Modal
@@ -305,7 +304,6 @@ export default function CreatePage() {
         onClose={() => router.push("/drawings")}
       />
 
-      </div>
     </main>
   );
 }

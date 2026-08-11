@@ -5,14 +5,11 @@
 interface CanvasProps {
   canvasRef: React.RefObject<HTMLCanvasElement | null>;
 
-  startDrawing: (
-    e: React.MouseEvent<HTMLCanvasElement>
-  ) => void;
+  width: number;
+  height: number;
 
-  draw: (
-    e: React.MouseEvent<HTMLCanvasElement>
-  ) => void;
-
+  startDrawing: React.MouseEventHandler<HTMLCanvasElement>;
+  draw: React.MouseEventHandler<HTMLCanvasElement>;
   stopDrawing: () => void;
 }
 
