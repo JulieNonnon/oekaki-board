@@ -7,7 +7,8 @@ const app = express();
 
 // Middleware
 app.use(cors());
-app.use(express.json());
+// app.use(express.json());
+app.use(express.json({ limit: "5mb" })); // ⚠️ solution temporaire pour gérer les images encodées en base64 avec de longues chaînes de caractères (limite de 5mo) pour éviter l'erreur "Payload too large" lors de l'envoi d'images encodées en base 64 depuis le frontend vers le backend. Envisager une solution plus robuste à l'avenir comme le stockage des images sur un service de stockage externe (ex: AWS S3, Cloudinary) et l'envoi d'URL vers ces images plutôt que d'envoyer les images encodées en base 64 directement dans les requêtes HTTP.
 
 // Routes
 app.use("/drawings", drawingsRoutes);
