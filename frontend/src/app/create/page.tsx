@@ -213,6 +213,12 @@ export default function CreatePage() {
 
     const dataUrl = canvas.toDataURL("image/png");
 
+    console.log(
+      "Taille de l'image :",
+      Math.round(dataUrl.length / 1024),
+      "Ko"
+    );
+
         try {
             const result = await createDrawing({
             title,
