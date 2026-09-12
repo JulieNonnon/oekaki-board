@@ -4,13 +4,13 @@
 "use client"; 
 
 import { useEffect, useRef, useState } from "react";
-import styles from "./page.module.css";
 import { createDrawing } from "@/services/drawings";
 import { useRouter } from "next/navigation";
-import Link from "next/dist/client/link";
+import Link from "next/link";
 import { Modal } from "@/components/ui/Modal";
 import { Canvas } from "@/components/drawing/Canvas";
 import { Toolbar } from "@/components/drawing/Toolbar";
+import { SaveBar } from "@/components/drawing/SaveBar";
 
 export default function CreatePage() {
 
@@ -221,8 +221,8 @@ export default function CreatePage() {
 
         try {
             const result = await createDrawing({
-            title,
-            imageBase64: dataUrl
+              title,
+              imageBase64: dataUrl
             });
 
             console.log("Saved:", result);
@@ -239,10 +239,8 @@ export default function CreatePage() {
 
       <h2>⚠️ Cet Oekaki Board est développé dans un but pédagogique: merci de ne pas publier de contenu sensible, inapproprié ou diffamatoire.</h2>
 
-      <Link href="/drawings">
-        <button className="button">
-          ↩️ Retour à l'accueil
-        </button>
+      <Link href="/drawings" className="button">
+        ↩️ Retour à l'accueil
       </Link>
     
       <div className="editor-card">
@@ -273,31 +271,12 @@ export default function CreatePage() {
             hasDrawn={hasDrawn}
           />
 
-          <div className="saveControls">
-        
-          <input
-            title="Renseigner un titre"
-            type="text"
-            placeholder="Titre du dessin"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            className="input"
+          <SaveBar
+            title={title}
+            setTitle={setTitle}
+            onSave={saveImage}
+            canSave={canSave}
           />
-
-          <button
-            title="Sauvegarder et publier votre dessin"
-            onClick={saveImage}
-            disabled={!canSave}
-            className={
-              `button ${canSave 
-                ? "bg-blue-500 hover:bg-blue-600"
-                : "bg-gray-300 cursor-not-allowed"}`
-            }
-          >
-            ✅Save
-          </button>
-
-          </div>
 
         </div>
 
