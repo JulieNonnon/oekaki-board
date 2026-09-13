@@ -8,9 +8,7 @@ interface Props {
   params: { id: string | string[] };
 }
 
-export default async function DrawingDetailPage({
-  params,
-}: Props) {
+export default async function DrawingDetailPage({ params }: Props) {
 
   // const { id } = await params;
   
@@ -18,6 +16,8 @@ export default async function DrawingDetailPage({
   const id = Array.isArray(params.id)
   ? params.id[0]
   : params.id;
+
+  console.log("ID reçu par la page détail :", id);
 
   const drawing = await getDrawingById(id);
 
