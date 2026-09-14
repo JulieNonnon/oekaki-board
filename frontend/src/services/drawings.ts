@@ -13,13 +13,13 @@ export const getDrawingById = async (
   id: string
 ) => {
 
-  console.log("FETCHING:", id);
+  //console.log("FETCHING:", id);
 
   const res = await fetch(
     `http://localhost:4000/drawings/${id}`
   );
 
-  console.log("STATUS:", res.status);
+  //console.log("STATUS:", res.status);
 
   if (!res.ok) {
     const errorText = await res.text();

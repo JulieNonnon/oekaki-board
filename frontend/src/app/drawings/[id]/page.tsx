@@ -4,7 +4,7 @@
 import { getDrawingById } from "@/services/drawings";
 import Link from "next/dist/client/link";
 
-interface Props {
+interface Props { // Dans Next.js, les données dynamiques sont traitées comme des promesses, donc on utilise Promise<{ id: string }> pour typer correctement les paramètres de la route dynamique.
   params: Promise<{ id: string }>;
 }
 
@@ -12,7 +12,7 @@ export default async function DrawingDetailPage({ params }: Props) {
 
   const { id } = await params;
 
-  console.log("ID reçu par la page détail :", id);
+  //console.log("ID reçu par la page détail :", id);
 
   const drawing = await getDrawingById(id);
 
