@@ -5,17 +5,12 @@ import { getDrawingById } from "@/services/drawings";
 import Link from "next/dist/client/link";
 
 interface Props {
-  params: { id: string | string[] };
+  params: Promise<{ id: string }>;
 }
 
 export default async function DrawingDetailPage({ params }: Props) {
 
-  // const { id } = await params;
-  
-  // obligatoire de gérer le cas où params.id est un tableau (ce qui peut arriver avec les routes dynamiques dans Next.js) pour éviter les erreurs.
-  const id = Array.isArray(params.id)
-  ? params.id[0]
-  : params.id;
+  const { id } = await params;
 
   console.log("ID reçu par la page détail :", id);
 
