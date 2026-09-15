@@ -14,9 +14,22 @@ Visualisation base de données via dbdiagram.io:
 https://dbdiagram.io/d/oekaki-board-69cd8f2578c6c4bc7ac30ef4
 
 1) Run backend: npm run dev
-- http://localhost:4000/drawings/1 (un dessin par id)
+- http://localhost:4000/drawings/uuid (un dessin par id)
 - http://localhost:4000/drawings (tous les dessins)
 
 2) Run frontend: npm run dev
 - http://localhost:3000/drawings (page avec tous les dessins récupérés)
 - http://localhost:3000/create (page de création / canvas)
+
+## Tests
+
+- **Frontend** → tests de logique/composants
+- Vitest : execute les tests
+- Testing Librairy : tester les composants react
+- **Backend**  → tests de notre API
+- Vitest : execute les tests
+- Supertest : permet de tester nos routes HTTP
+
+vitest → le moteur de tests frontend/backend
+@vitejs/plugin-react → permet à Vitest de comprendre correctement le code React/TSX.
+jsdom → fournit un environnement qui imite le navigateur pour les tests de composants React.
