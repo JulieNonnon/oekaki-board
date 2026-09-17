@@ -16,4 +16,8 @@ describe("canSaveDrawing", () => {
   it("should return false if both title and drawing don't exist", () => {
     expect(canSaveDrawing("", false)).toBe(false);
   });
+  // edge case:
+  it("should return false when the title only contains spaces", () => {
+    expect(canSaveDrawing("  ", true)).toBe(false);
+  });
 });

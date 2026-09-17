@@ -11,6 +11,7 @@ import { Modal } from "@/components/ui/Modal";
 import { Canvas } from "@/components/drawing/Canvas";
 import { Toolbar } from "@/components/drawing/Toolbar";
 import { SaveBar } from "@/components/drawing/SaveBar";
+import { canSaveDrawing } from "@/utils/canSaveDrawing";
 
 export default function CreatePage() {
 
@@ -198,7 +199,7 @@ export default function CreatePage() {
   };
 
   // Activer le bouton de sauvegarde seulement si le titre est rempli et qu'on a dessiné quelque chose.
-  const canSave = title.trim().length > 0 && hasDrawn;
+  const canSave = canSaveDrawing(title, hasDrawn);
 
   // Pour l’instant, on se contente de récupérer l’image au format data URL et de l’afficher dans la console.
   const saveImage = async () => {
