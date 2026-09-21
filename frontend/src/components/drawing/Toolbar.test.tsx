@@ -10,8 +10,18 @@ describe("Toolbar", () => {
 
     render(
       <Toolbar
+        color="black"
+        setColor={vi.fn()}
+        brushSize={5}
+        setBrushSize={vi.fn()}
         tool="brush"
         setTool={setTool}
+        undo={vi.fn()}
+        redo={vi.fn()}
+        clearCanvas={vi.fn()}
+        historyIndex={0}
+        historyLength={1}
+        hasDrawn={true}
       />
     );
 
