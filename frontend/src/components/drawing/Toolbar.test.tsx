@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Toolbar } from "./Toolbar";
 
@@ -61,5 +61,36 @@ describe("Toolbar", () => {
     await user.click(brushButton);
 
     expect(setTool).toHaveBeenCalledWith("brush");
+  });
+  it("should change the brush size when the user moves the slider", async () => {
+    const setBrushSize = vi.fn();
+    const user = userEvent.setup();
+
+    render(
+        <Toolbar
+        color="black"
+        setColor={vi.fn()}
+        brushSize={5}
+        setBrushSize={setBrushSize}
+        tool="brush"
+        setTool={vi.fn()}
+        undo={vi.fn()}
+        redo={vi.fn()}
+        clearCanvas={vi.fn()}
+        historyIndex={0}
+        historyLength={1}
+        hasDrawn={true}
+        />
+    );
+
+    const brushSizeSlider = screen.getByRole("slider", {
+        name: /taille du pinceau/i,
+    });
+
+    fireEvent.change(brushSizeSlider, {
+      target: { value: "6" },
+    });
+
+    expect(setBrushSize).toHaveBeenCalledWith(6);
   });
 });
