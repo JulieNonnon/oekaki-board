@@ -151,4 +151,28 @@ describe("Toolbar", () => {
 
     expect(redo).toHaveBeenCalled();
   });
+  it("should disable Redo when there is no next history state", () => {
+    render(
+      <Toolbar
+        color="black"
+        setColor={vi.fn()}
+        brushSize={5}
+        setBrushSize={vi.fn()}
+        tool="brush"
+        setTool={vi.fn()}
+        undo={vi.fn()}
+        redo={vi.fn()}
+        clearCanvas={vi.fn()}
+        historyIndex={1}
+        historyLength={2}
+        hasDrawn={true}
+      />
+    );
+
+    const redoButton = screen.getByRole("button", {
+      name: /redo/i,
+    });
+
+    expect(redoButton).toBeDisabled();
+  });
 });
