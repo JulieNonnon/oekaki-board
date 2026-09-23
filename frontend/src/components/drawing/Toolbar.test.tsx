@@ -122,6 +122,30 @@ describe("Toolbar", () => {
 
     expect(undo).toHaveBeenCalled();
   });
+  it("should disable Undo when there is no previous history state", () => {
+    render(
+      <Toolbar
+        color="black"
+        setColor={vi.fn()}
+        brushSize={5}
+        setBrushSize={vi.fn()}
+        tool="brush"
+        setTool={vi.fn()}
+        undo={vi.fn()}
+        redo={vi.fn()}
+        clearCanvas={vi.fn()}
+        historyIndex={0}
+        historyLength={2}
+        hasDrawn={true}
+      />
+    );
+
+    const undoButton = screen.getByRole("button", {
+      name: /undo/i,
+    });
+
+    expect(undoButton).toBeDisabled();
+  });
   it("should call redo when the user clicks Redo", async () => {
     const redo = vi.fn();
     const user = userEvent.setup();
