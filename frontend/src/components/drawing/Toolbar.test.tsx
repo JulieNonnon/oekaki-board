@@ -199,4 +199,33 @@ describe("Toolbar", () => {
 
     expect(redoButton).toBeDisabled();
   });
+  it("should call clearCanvas when the user clicks Clear", async () => {
+    const clearCanvas = vi.fn();
+    const user = userEvent.setup();
+
+    render(
+      <Toolbar
+        color="black"
+        setColor={vi.fn()}
+        brushSize={5}
+        setBrushSize={vi.fn()}
+        tool="brush"
+        setTool={vi.fn()}
+        undo={vi.fn()}
+        redo={vi.fn()}
+        clearCanvas={clearCanvas}
+        historyIndex={1}
+        historyLength={2}
+        hasDrawn={true}
+      />
+    );
+
+    const clearButton = screen.getByRole("button", {
+      name: /clear/i,
+    });
+
+    await user.click(clearButton);
+
+    expect(clearCanvas).toHaveBeenCalled();
+  });
 });
