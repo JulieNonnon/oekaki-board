@@ -93,4 +93,33 @@ describe("Toolbar", () => {
 
     expect(setBrushSize).toHaveBeenCalledWith(6);
   });
+  it("should call undo when the user clicks Undo", async () => {
+    const undo = vi.fn();
+    const user = userEvent.setup();
+
+    render(
+      <Toolbar
+        color="black"
+        setColor={vi.fn()}
+        brushSize={5}
+        setBrushSize={vi.fn()}
+        tool="brush"
+        setTool={vi.fn()}
+        undo={undo}
+        redo={vi.fn()}
+        clearCanvas={vi.fn()}
+        historyIndex={1}
+        historyLength={2}
+        hasDrawn={true}
+      />
+    );
+
+    const undoButton = screen.getByRole("button", {
+      name: /undo/i,
+    });
+
+    await user.click(undoButton);
+
+    expect(undo).toHaveBeenCalled();
+  });
 });
