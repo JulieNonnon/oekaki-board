@@ -1,6 +1,7 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import { ColorPalette } from "./ColorPalette";
+import { userEvent } from "@testing-library/user-event/dist/cjs/setup/index.js";
 
 describe("ColorPalette", () => {
   it("should render 10 color buttons", () => {
@@ -15,4 +16,23 @@ describe("ColorPalette", () => {
 
     expect(colorButtons).toHaveLength(10);
   });
+  it("should call onChange with the selected color", async () => {
+    const onChange = vi.fn();
+    const user = userEvent.setup();
+
+    render(
+        <ColorPalette
+            selectedColor="#000000"
+            onChange={onChange}
+        />
+    );
+
+    const redButton = screen.getByTitle(
+        "Sélectionner la couleur #FF0000"
+    );
+
+    await user.click(redButton);
+
+    expect(onChange).toHaveBeenCalledWith("#FF0000");
+    });
 });
