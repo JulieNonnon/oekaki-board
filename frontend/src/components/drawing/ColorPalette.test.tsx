@@ -51,4 +51,35 @@ describe("ColorPalette", () => {
 
         expect(redButton.style.border).toBe("3px solid black");
     });
+    it("should display the default title for each color button", () => {
+        const onChange = vi.fn();
+
+        render(
+            <ColorPalette
+            selectedColor="#000000"
+            onChange={onChange}
+            />
+        );
+
+        const colors = [
+            "#000000",
+            "#FFFFFF",
+            "#FF0000",
+            "#FFA500",
+            "#FFFF00",
+            "#00FF00",
+            "#87CEFA",
+            "#0000FF",
+            "#800080",
+            "#FF00FF",
+        ];
+
+        const colorButtons = screen.getAllByRole("button");
+
+        colorButtons.forEach((button, index) => {
+            expect(button.title).toBe(
+            `Sélectionner la couleur ${colors[index]}`
+            );
+        });
+    });
 });
