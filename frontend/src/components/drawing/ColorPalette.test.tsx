@@ -35,4 +35,20 @@ describe("ColorPalette", () => {
 
     expect(onChange).toHaveBeenCalledWith("#FF0000");
     });
+    it("should highlight the selected color with a black border", () => {
+        const onChange = vi.fn();
+
+        render(
+            <ColorPalette
+            selectedColor="#FF0000"
+            onChange={onChange}
+            />
+        );
+
+        const redButton = screen.getByTitle(
+            "Sélectionner la couleur #FF0000"
+        );
+
+        expect(redButton.style.border).toBe("3px solid black");
+    });
 });
