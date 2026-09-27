@@ -23,23 +23,42 @@ describe("Canvas", () => {
     expect(canvasElement).toBeInTheDocument();
   });
   it("should call startDrawing when the user presses the canvas", () => {
-  const startDrawing = vi.fn();
+    const startDrawing = vi.fn();
 
-  render(
-    <Canvas
-      canvasRef={createRef<HTMLCanvasElement>()}
-      width={600}
-      height={400}
-      startDrawing={startDrawing}
-      draw={vi.fn()}
-      stopDrawing={vi.fn()}
-    />
-  );
+    render(
+      <Canvas
+        canvasRef={createRef<HTMLCanvasElement>()}
+        width={600}
+        height={400}
+        startDrawing={startDrawing}
+        draw={vi.fn()}
+        stopDrawing={vi.fn()}
+      />
+    );
 
-  const canvasElement = document.querySelector("canvas");
+    const canvasElement = document.querySelector("canvas");
 
-  fireEvent.mouseDown(canvasElement!);
+    fireEvent.mouseDown(canvasElement!);
 
-  expect(startDrawing).toHaveBeenCalled();
-});
+    expect(startDrawing).toHaveBeenCalled();
+  });
+  it("should call draw when the user moves the mouse over the canvas", () => {
+    const draw = vi.fn();
+
+    render(
+      <Canvas
+        canvasRef={createRef<HTMLCanvasElement>()}
+        width={600}
+        height={400}
+        startDrawing={vi.fn()}
+        draw={draw}
+        stopDrawing={vi.fn()}
+      />
+    );
+
+    const canvasElement = document.querySelector("canvas");
+
+    fireEvent.mouseMove(canvasElement!);
+    expect(draw).toHaveBeenCalled();
+  })
 });
