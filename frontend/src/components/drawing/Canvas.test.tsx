@@ -61,4 +61,24 @@ describe("Canvas", () => {
     fireEvent.mouseMove(canvasElement!);
     expect(draw).toHaveBeenCalled();
   })
+  it("should call stopDrawing when the user releases the mouse button", () => {
+    const stopDrawing = vi.fn();
+
+    render(
+      <Canvas
+        canvasRef={createRef<HTMLCanvasElement>()}
+        width={600}
+        height={400}
+        startDrawing={vi.fn()}
+        draw={vi.fn()}
+        stopDrawing={stopDrawing}
+      />
+    );
+
+    const canvasElement = document.querySelector("canvas");
+
+    fireEvent.mouseUp(canvasElement!);
+
+    expect(stopDrawing).toHaveBeenCalled();
+  });
 });
