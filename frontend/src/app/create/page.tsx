@@ -247,8 +247,8 @@ export default function CreatePage() {
       <div className="editor-card">
 
         <Canvas
-          width={600}
-          height={400}
+          // width={600}
+          // height={400}
           canvasRef={canvasRef}
           startDrawing={startDrawing}
           draw={draw}
