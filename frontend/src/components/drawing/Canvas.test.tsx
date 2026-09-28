@@ -10,8 +10,8 @@ describe("Canvas", () => {
     const { container } = render(
       <Canvas
         canvasRef={canvasRef}
-        width={600}
-        height={400}
+        // width={600}
+        // height={400}
         startDrawing={vi.fn()}
         draw={vi.fn()}
         stopDrawing={vi.fn()}
@@ -28,8 +28,8 @@ describe("Canvas", () => {
     render(
       <Canvas
         canvasRef={createRef<HTMLCanvasElement>()}
-        width={600}
-        height={400}
+        // width={600}
+        // height={400}
         startDrawing={startDrawing}
         draw={vi.fn()}
         stopDrawing={vi.fn()}
@@ -48,8 +48,8 @@ describe("Canvas", () => {
     render(
       <Canvas
         canvasRef={createRef<HTMLCanvasElement>()}
-        width={600}
-        height={400}
+        // width={600}
+        // height={400}
         startDrawing={vi.fn()}
         draw={draw}
         stopDrawing={vi.fn()}
@@ -67,8 +67,8 @@ describe("Canvas", () => {
     render(
       <Canvas
         canvasRef={createRef<HTMLCanvasElement>()}
-        width={600}
-        height={400}
+        // width={600}
+        // height={400}
         startDrawing={vi.fn()}
         draw={vi.fn()}
         stopDrawing={stopDrawing}
@@ -87,8 +87,8 @@ describe("Canvas", () => {
     render(
       <Canvas
         canvasRef={createRef<HTMLCanvasElement>()}
-        width={600}
-        height={400}
+        // width={600}
+        // height={400}
         startDrawing={vi.fn()}
         draw={vi.fn()}
         stopDrawing={stopDrawing}
@@ -101,26 +101,26 @@ describe("Canvas", () => {
 
     expect(stopDrawing).toHaveBeenCalled();
   });
-  it("should call stopDrawing when the user releases the mouse button or leaves the canvas", () => {
-    const stopDrawing = vi.fn();
+  // it("should call stopDrawing when the user releases the mouse button or leaves the canvas", () => {
+  //   const stopDrawing = vi.fn();
 
-    render(
-      <Canvas
-        canvasRef={createRef<HTMLCanvasElement>()}
-        width={600}
-        height={400}
-        startDrawing={vi.fn()}
-        draw={vi.fn()}
-        stopDrawing={stopDrawing}
-      />
-    );
+  //   render(
+  //     <Canvas
+  //       canvasRef={createRef<HTMLCanvasElement>()}
+  //       width={600}
+  //       height={400}
+  //       startDrawing={vi.fn()}
+  //       draw={vi.fn()}
+  //       stopDrawing={stopDrawing}
+  //     />
+  //   );
 
-    const canvasElement = document.querySelector("canvas");
+  //   const canvasElement = document.querySelector("canvas");
 
-    fireEvent.mouseUp(canvasElement!);
-    expect(stopDrawing).toHaveBeenCalled();
+  //   fireEvent.mouseUp(canvasElement!);
+  //   expect(stopDrawing).toHaveBeenCalled();
 
-    fireEvent.mouseLeave(canvasElement!);
-    expect(stopDrawing).toHaveBeenCalledTimes(2);
-  })
+  //   fireEvent.mouseLeave(canvasElement!);
+  //   expect(stopDrawing).toHaveBeenCalledTimes(2);
+  // })
 });

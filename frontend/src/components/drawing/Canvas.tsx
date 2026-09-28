@@ -4,13 +4,11 @@
 
 interface CanvasProps {
   canvasRef: React.RefObject<HTMLCanvasElement | null>;
-
-  width: number;
-  height: number;
-
   startDrawing: React.MouseEventHandler<HTMLCanvasElement>;
   draw: React.MouseEventHandler<HTMLCanvasElement>;
   stopDrawing: () => void;
+  // width: number; [PROCHAINE VERSION] : ajouter le props width pour donner la possibilité à l'utilisateur de configurer la taille du canvas, actuellement en dur dans le code pour simplifier de développement.
+  // height: number; [PROCHAINE VERSION] : ajouter le props height pour donner la possibilité à l'utilisateur de configurer la taille du canvas, actuellement en dur dans le code pour simplifier de développement.
 }
 
 export const Canvas = ({
@@ -23,8 +21,8 @@ export const Canvas = ({
     <div className="canvasContainer">
       <canvas
         ref={canvasRef}
-        width={600}
-        height={400}
+        width={600} // temporairement fixé à 600px, à remplacer par le props width dans une prochaine version
+        height={400} // temporairement fixé à 400px, à remplacer par le props height dans une prochaine version
         className="canvas"
         onMouseDown={startDrawing}
         onMouseMove={draw}
