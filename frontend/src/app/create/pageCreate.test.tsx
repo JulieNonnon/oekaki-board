@@ -1,6 +1,11 @@
 import { describe, expect, it, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import CreatePage from "./page";
+import { createDrawing } from "@/services/drawings";
+
+vi.mock("@/services/drawings", () => ({
+  createDrawing: vi.fn(),
+}));
 
 vi.mock("@/components/drawing/Canvas", () => ({
   Canvas: () => <div data-testid="canvas" />,
