@@ -1,5 +1,15 @@
 # oekaki-board
-Projet d'oekaki board
+Stack technique :
+
+| | |
+|---|---|
+| **Frontend** | Next.js / Typescript |
+| **Backend** | Node.js Express / TypeScript |
+| **Database**| PostgreSQL |
+| **Testing** | Vitest / React Testing Library |
+| **ORM** | Prisma |
+| **Quality** | CI/CD GitHub Actions |
+| **Infra** | Docker |
 
 ## Présentation:
 
